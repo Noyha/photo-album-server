@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const hashtagSchema = require('./Hashtag');
+// const hashtagSchema = require('./Hashtag');
 
 const photoSchema = new Schema({
     path: {
@@ -15,7 +15,7 @@ const photoSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    hashtags: [hashtagSchema]
+    hashtags: [String]
 });
 
 module.exports = Photo = mongoose.model("photo", photoSchema);

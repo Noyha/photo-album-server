@@ -28,20 +28,18 @@ router.get("/:id", (req, res) => {
 // @route POST api/photos/upload
 // @desc Post a photo
 router.post('/upload', (req, res) => {
-    let sampleFile, uploadPath, mainDir;
-
     // check if any file was uploaded
     if (Object.keys(req.files).length === 0) {
         res.status(400).send('No files were uploaded.');
         return;
     }
 
-    sampleFile = req.files.sampleFile;
-    mainDir = __dirname.split("routes\\api")[0];
-    uploadPath = mainDir + 'public/uploads/' + sampleFile.name;
+    const photo = req.files.photo;
+    const mainDir = __dirname.split("routes\\api")[0];
+    const uploadPath = mainDir + 'public/uploads/' + photo.name;
 
-    // save file to public/uploads directory
-    sampleFile.mv(uploadPath, (err) => {
+    // save photo to public/uploads directory
+    photo.mv(uploadPath, (err) => {
         if (err) {
             return res.status(500).send(err);
         }
@@ -51,7 +49,7 @@ router.post('/upload', (req, res) => {
     const hashtags = ExtractHashtagsFromString(req.body.desc);
 
     const newPhoto = new Photo ({
-        path: `/uploads/${req.files.sampleFile.name}`,
+        path: `/uploads/${req.files.photo.name}`,
         description: req.body.desc,
         hashtags: hashtags
     })

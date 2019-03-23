@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const fileUpload = require('express-fileupload');
-const ExtractHashtagsFromString = require('../../helpers/ExtractHashtagsFromString');
+const extractHashtagsFromString = require('../../helpers/ExtractHashtagsFromString');
 const Photo = require('../../models/Photo'); //get Photo Model
 
 router.use(fileUpload());
@@ -9,10 +9,11 @@ router.use(fileUpload());
 // @route GET api/photos || api/photos?hashtag=name
 // @desc Get all photos || Get photos by query
 router.get('/', (req, res) => {
-    if (req.query.hashtag) {
+    // if there is a string in the query, then find by hashtags
+    if (req.query.hashtag.length > 0) {
         Photo.find({ hashtags: req.query.hashtag })
             .then(photos => res.json(photos))
-    } else {
+    } else { // if it's empty, then display all photos
         Photo.find()
             .then(photos => res.json(photos))
     }
@@ -22,7 +23,8 @@ router.get('/', (req, res) => {
 // @desc Get photos
 router.get("/:id", (req, res) => {
     Photo.findById(req.params.id)
-        .then(photo => res.json(photo));
+        .then(photo => res.json(photo))
+        .catch(err => res.send(err))
 });
 
 // @route POST api/photos/upload
@@ -30,7 +32,7 @@ router.get("/:id", (req, res) => {
 router.post('/upload', (req, res) => {
     // check if any file was uploaded
     if (Object.keys(req.files).length === 0) {
-        res.status(400).send('No files were uploaded.');
+        res.status(400).send({ message: 'No files were uploaded.'});
         return;
     }
 
@@ -39,22 +41,23 @@ router.post('/upload', (req, res) => {
     const uploadPath = mainDir + 'public/uploads/' + photo.name;
 
     // save photo to public/uploads directory
-    photo.mv(uploadPath, (err) => {
+    photo.mv(uploadPath, err => {
         if (err) {
             return res.status(500).send(err);
         }
+
+        // extract hashtags from description
+        const hashtags = extractHashtagsFromString(req.body.desc);
+
+        const newPhoto = new Photo ({
+            path: `/uploads/${req.files.photo.name}`,
+            description: req.body.desc,
+            hashtags: hashtags
+        })
+        // save to db
+        newPhoto.save()
+            .then(photo => res.json(photo));
     });
-
-    // extract hashtags from description
-    const hashtags = ExtractHashtagsFromString(req.body.desc);
-
-    const newPhoto = new Photo ({
-        path: `/uploads/${req.files.photo.name}`,
-        description: req.body.desc,
-        hashtags: hashtags
-    })
-    // save to db
-    newPhoto.save().then(photo => res.json(photo));
 });
 
 module.exports = router;

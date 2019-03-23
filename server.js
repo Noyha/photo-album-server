@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const path = require("path");
 const cors = require("cors");
 
-
 const photos = require("./routes/api/photos");
 
 const app = express();
@@ -13,7 +12,7 @@ app.use(express.json());
 app.use(cors());
 
 //Static file declaration
-app.use(express.static(path.join(__dirname, "public")));
+// app.use(express.static(path.join(__dirname, "../photo-album-client/build")));
 
 // db config
 const db = require("./config/keys").mongoURI;

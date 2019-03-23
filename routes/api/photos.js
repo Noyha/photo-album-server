@@ -10,7 +10,7 @@ router.use(fileUpload());
 // @desc Get all photos || Get photos by query
 router.get('/', (req, res) => {
     // if there is a string in the query, then find by hashtags
-    if (req.query.hashtag.length > 0) {
+    if (req.query.hashtag && req.query.hashtag.length > 0) {
         Photo.find({ hashtags: req.query.hashtag })
             .then(photos => res.json(photos))
     } else { // if it's empty, then display all photos
@@ -39,6 +39,7 @@ router.post('/upload', (req, res) => {
     const photo = req.files.photo;
     const mainDir = __dirname.split("routes\\api")[0];
     const uploadPath = mainDir + 'public/uploads/' + photo.name;
+    // const uploadPath = '../../public/uploads/' + photo.name;
 
     // save photo to public/uploads directory
     photo.mv(uploadPath, err => {

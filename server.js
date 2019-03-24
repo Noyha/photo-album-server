@@ -1,7 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
-const cors = require("cors");
 
 const photos = require("./routes/api/photos");
 
@@ -9,10 +8,8 @@ const app = express();
 
 app.use(express.json());
 
-app.use(cors());
-
 //Static file declaration
-app.use(express.static('public/uploads'))
+app.use(express.static('public/uploads'));
 app.use(express.static(path.join(__dirname, "../photo-album-client/build")));
 
 // db config
@@ -29,6 +26,6 @@ mongoose
 // Use routes
 app.use("/api/photos", photos);
 
-app.get('*',(req,res)=>{
+app.get('*',(req, res)=>{
   res.sendFile(path.join(__dirname + '../photo-album-client/build/index.html'))
 })

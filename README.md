@@ -1,17 +1,27 @@
+## Photo Album App
+
 Name: Noy Hadaria
 
 Course: FullStack 4580 - Asaf Blum
 
-For back:
+# instructions:
 
-npm install
+# For Front:
 
-npm start
+* npm install
 
-runing on port 5000
+* change src/components/header name to Header
 
-and run client on port 3000
+* npm run build
+
+# For Back:
+
+* npm install
+
+* npm start
+
+* runing on port 5000
 
 
-* can't host the build directory on server, didn't had time to fix it
+fixed - build directory hosted on server, runing on port 5000
 

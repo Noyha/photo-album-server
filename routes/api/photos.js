@@ -39,8 +39,7 @@ router.post('/upload', (req, res) => {
     const photo = req.files.photo;
     const mainDir = __dirname.split("routes\\api")[0];
     const uploadPath = mainDir + 'public/uploads/' + photo.name;
-    // const uploadPath = '../../public/uploads/' + photo.name;
-
+    
     // save photo to public/uploads directory
     photo.mv(uploadPath, err => {
         if (err) {
@@ -51,7 +50,7 @@ router.post('/upload', (req, res) => {
         const hashtags = extractHashtagsFromString(req.body.desc);
 
         const newPhoto = new Photo ({
-            path: `/uploads/${req.files.photo.name}`,
+            path: `/${req.files.photo.name}`,
             description: req.body.desc,
             hashtags: hashtags
         })

@@ -1,27 +1,17 @@
-## Photo Album App
+## Photo Album Server
 
-Name: Noy Hadaria
-
-Course: FullStack 4580 - Asaf Blum
-
-# instructions:
-
-# For Front:
+clone the client repository (photo-album-client):
 
 * npm install
-
-* change src/components/header name to Header
 
 * npm run build
 
-# For Back:
+then, clone https://github.com/Noyha/photo-album-server.git and run: 
 
-* npm install
+* npm install 
 
 * npm start
 
-* runing on port 5000
+The server will host the build folder from the frontend project
 
-
-fixed - build directory hosted on server, runing on port 5000
-
+server runs on port 5000
